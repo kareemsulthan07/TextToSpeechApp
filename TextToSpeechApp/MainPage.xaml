@@ -1,0 +1,83 @@
+﻿<Page
+    x:Class="TextToSpeechApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TextToSpeechApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:speech="using:Windows.Media.SpeechSynthesis"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="VoiceDataTemplate" x:DataType="speech:VoiceInformation">
+            <TextBlock Text="{Binding DisplayName}"/>
+        </DataTemplate>
+    </Page.Resources>
+
+    <RelativePanel Padding="20,10">
+        <TextBlock x:Name="TitleTextBlock"
+                   Text="SpeechSynthesizer - Convert text into speech/audio without INTERNET"
+                   FontFamily="Calibri"
+                   FontSize="40"
+                   Foreground="DarkOrange"
+                   TextWrapping="Wrap"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   RelativePanel.AlignTopWithPanel="True"
+                   RelativePanel.AlignRightWithPanel="True"/>
+
+        <ComboBox x:Name="VoiceComboBox"
+                  ItemsSource="{x:Bind speech:SpeechSynthesizer.AllVoices,Mode=OneWay}"
+                  ItemTemplate="{StaticResource VoiceDataTemplate}"
+                  SelectedItem="{x:Bind SelectedVoice,Mode=TwoWay}"
+                  PlaceholderText="Pick a voice" 
+                  FontFamily="Calibri"
+                  FontSize="16"
+                  Width="200"
+                  Margin="0,10,0,0"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.Below="TitleTextBlock"/>
+
+        <Button Name="ConvertButton"
+                Content="Convert"
+                Width="100"
+                Margin="10,0"
+                RelativePanel.LeftOf="SaveButton"
+                RelativePanel.AlignVerticalCenterWith="VoiceComboBox"
+                Click="ConvertButton_Click"/>
+
+        <Button Name="SaveButton"
+                Content="Save as .wav"
+                Width="100"
+                RelativePanel.AlignVerticalCenterWith="VoiceComboBox"
+                RelativePanel.AlignRightWithPanel="True"
+                Click="SaveButton_Click"/>
+
+        <TextBox x:Name="TextInputTextBox"
+                 Text="{x:Bind TextInput,Mode=TwoWay}"
+                 PlaceholderText="Enter Text"
+                 Margin="0,10,0,10"
+                 AcceptsReturn="True"
+                 RelativePanel.AlignLeftWithPanel="True"
+                 RelativePanel.AlignRightWithPanel="True"
+                 RelativePanel.Below="VoiceComboBox"
+                 RelativePanel.Above="mPlayerElement"/>
+
+        <MediaPlayerElement x:Name="mPlayerElement"
+                            Height="100"
+                            AutoPlay="False"
+                            AreTransportControlsEnabled="True"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.AlignBottomWithPanel="True">
+            <MediaPlayerElement.TransportControls>
+                <MediaTransportControls IsStopButtonVisible="True"
+                                        IsStopEnabled="True"
+                                        IsSeekBarVisible="True"
+                                        IsSeekEnabled="True"
+                                        IsFullWindowButtonVisible="False"
+                                        IsZoomButtonVisible="False"/>
+            </MediaPlayerElement.TransportControls>
+        </MediaPlayerElement>
+    </RelativePanel>
+</Page>
