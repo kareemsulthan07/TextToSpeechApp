@@ -56,7 +56,7 @@ namespace TextToSpeechApp
                         var _stream = await file.OpenStreamForWriteAsync();
                         await stream.CopyToAsync(_stream);
                         await _stream.FlushAsync();
-                        var dlg = new MessageDialog("File saved successfully.", Package.Current.DisplayName);
+                        var dlg = new MessageDialog("File saved.", Package.Current.DisplayName);
                         var cmd = await dlg.ShowAsync();
                     }
                 }
@@ -72,9 +72,6 @@ namespace TextToSpeechApp
         {
             try
             {
-                if (string.IsNullOrEmpty(TextInput) && string.IsNullOrWhiteSpace(TextInput))
-                    throw new Exception("Text is empty.");
-
                 using (var synthesizer = new SpeechSynthesizer())
                 {
                     synthesizer.Voice = SelectedVoice ?? SpeechSynthesizer.DefaultVoice;
